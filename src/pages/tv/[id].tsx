@@ -6,7 +6,7 @@ import Card from '../../components/card'
 import { AppleMediaResponse, ImageDetails } from '../../@types/atv-response-common'
 import { ItemResponse } from '../../@types/atv-item-response'
 import AssetCard from '../../components/assetcard'
-import { ImageType } from '../../utils/constant'
+import { ImageType } from '../../utils/constant/constant'
 
 export const getServerSideProps = async ({ params, query }: GetServerSidePropsContext) => {
   // const { data } = await APPLE_TV_API.GET_MEDIA_INFO({ country: 'th', cId: 'umc.cmc.5983fipzqbicvrve6jdfep4x3' })

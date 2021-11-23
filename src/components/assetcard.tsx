@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ImageDetails } from '../@types/atv-response-common'
 import { ShelfItem, TMovie } from '../@types/atv-search-response'
-import { ImageType } from '../utils/constant'
+import { ImageType } from '../utils/constant/constant'
 import { getImageUrl } from '../utils/helpers'
 
 const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [key, img], cId }) => {
