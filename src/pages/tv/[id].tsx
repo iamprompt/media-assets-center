@@ -7,17 +7,26 @@ import { AppleMediaResponse, ImageDetails } from '../../@types/atv-response-comm
 import { ItemResponse } from '../../@types/atv-item-response'
 import AssetCard from '../../components/assetcard'
 import { ImageType } from '../../utils/constant/constant'
+import REGIONS from '../../utils/constant/region'
 
 export const getServerSideProps = async ({ params, query }: GetServerSidePropsContext) => {
-  // const { data } = await APPLE_TV_API.GET_MEDIA_INFO({ country: 'th', cId: 'umc.cmc.5983fipzqbicvrve6jdfep4x3' })
-  if (params?.id && !Array.isArray(params.id)) {
+  const id = query?.id && !Array.isArray(query.id) ? query.id : undefined
+  const country = query?.country && !Array.isArray(query.country) ? query.country : 'TH'
+  const locale =
+    query?.locale && !Array.isArray(query.locale)
+      ? query.locale
+      : country
+      ? Object.keys(REGIONS[country.toUpperCase()].langs)[0]
+      : 'th-TH'
+
+  if (id) {
     const {
       data: { data },
     } = await APPLE_TV_API.GET_MEDIA_INFO({
       country: query?.country && !Array.isArray(query.country) ? query.country : 'th',
-      cId: params.id,
+      cId: id,
     })
-    return { props: { data } }
+    return { props: { data, country: country?.toUpperCase(), locale: locale } }
   }
 
   return {
@@ -27,8 +36,10 @@ export const getServerSideProps = async ({ params, query }: GetServerSidePropsCo
 
 const ItemPage: NextPage<{
   data: ItemResponse
-}> = ({ data: { content, related } }) => {
-  console.log(content)
+  country: string
+  locale: string
+}> = ({ data: { content, related }, country, locale }) => {
+  // console.log(content)
 
   return (
     <Layout>
@@ -48,7 +59,7 @@ const ItemPage: NextPage<{
             <h1 className="font-headline text-2xl font-bold mt-5 mb-3">ที่เกี่ยวข้อง</h1>
             <ul className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {related.items.slice(0, 8).map((item) => (
-                <Card d={item} key={item.id} layout="v" />
+                <Card d={item} key={item.id} layout="v" option={{ country, locale }} />
               ))}
             </ul>
           </div>
