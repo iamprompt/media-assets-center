@@ -100,11 +100,15 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
                   onChange={(e) => setSearchCountry(e.target.value)}
                   value={searchCountry}
                 >
-                  {Object.entries(REGIONS).map(([c, v]) => (
-                    <option key={v.name} value={c}>
-                      {c}
-                    </option>
-                  ))}
+                  {Object.entries(REGIONS)
+                    .sort((a, b) => {
+                      return a[0] > b[0] ? 1 : -1
+                    })
+                    .map(([c, v]) => (
+                      <option key={v.name} value={c}>
+                        {c}
+                      </option>
+                    ))}
                 </select>
               </span>
               <span className="absolute inset-y-0 right-0 flex items-center w-5 h-full mr-3">
