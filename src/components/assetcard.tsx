@@ -11,22 +11,21 @@ const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [k
   const k = key as keyof typeof ImageType
 
   return (
-    <li className={`w-full h-96 grid grid-cols-3`}>
-      <div className="col-span-1">
+    <li className={`w-full h-96 flex flex-col items-center md:items-start md:flex-row gap-4`}>
+      <div className="w-full md:w-1/3">
         <div>
           <p className="font-headline font-medium text-lg">{ImageType[k]}</p>
           <p className="font-text">
             ขนาด {img.width} x {img.height} พิกเซล
           </p>
         </div>
-        <div className="mt-3 flex gap-3 flex-wrap">
+        <div className="mt-3 flex flex-row gap-5 flex-wrap">
           <button
             className="bg-green-600 py-2 px-3 rounded-full text-white"
             onClick={() => saveAs(getImageUrl(img, { ext: 'jpg' }), `${cId}-${key}.jpg`)}
           >
             ดาวน์โหลด
           </button>
-
           {img.supportsLayeredImage && (
             <button
               className="bg-green-600 py-2 px-3 rounded-full text-white"
@@ -38,7 +37,7 @@ const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [k
         </div>
       </div>
 
-      <div className="relative col-span-2 flex">
+      <div className="relative col-span-1 md:col-span-2 flex h-64 w-full md:h-full md:w-2/3">
         <Image
           className="rounded-xl"
           src={getImageUrl(img, { ext: 'webp', width: 640 })}

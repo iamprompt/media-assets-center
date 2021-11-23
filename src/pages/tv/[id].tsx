@@ -37,22 +37,21 @@ const ItemPage: NextPage<{
           <Image src={getImageUrl(content.images.coverArt16X9)} alt="" layout="fill" className="rounded-b-xl" />
         </div>
 
-        <div>
+        <div className="px-5 mb-20">
           <h1 className="font-headline text-2xl font-bold mt-5 mb-3">Assets</h1>
-          <ul className="space-y-5">
+          <ul className="space-y-10">
             {Object.entries(content.images).map((img) => (
               <AssetCard cId={content.id} d={img} key={img[0]} />
             ))}
           </ul>
-        </div>
-
-        <div>
-          <h1 className="font-headline text-2xl font-bold mt-5 mb-3">ที่เกี่ยวข้อง</h1>
-          <ul className="grid grid-cols-8 gap-5">
-            {related.items.slice(0, 8).map((item) => (
-              <Card d={item} key={item.id} layout="v" />
-            ))}
-          </ul>
+          <div>
+            <h1 className="font-headline text-2xl font-bold mt-5 mb-3">ที่เกี่ยวข้อง</h1>
+            <ul className="grid grid-cols-2 md:grid-cols-4 gap-5">
+              {related.items.slice(0, 8).map((item) => (
+                <Card d={item} key={item.id} layout="v" />
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </Layout>

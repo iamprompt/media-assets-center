@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import Link from 'next/link'
 
 type Props = {
   className?: string
@@ -9,10 +10,14 @@ const NavBar: NextPage<Props> = ({ className }) => {
     <nav className="h-11 bg-black sticky inset-0 z-[100]">
       <ul className={`text-white flex justify-between items-center h-full${className ? ` ${className}` : ``}`}>
         <div>
-          <li>a</li>
+          <li className="font-bold">Apple TV Assets Center</li>
         </div>
         <div>
-          <li>a</li>
+          <li>
+            <Link href="/search" passHref={true}>
+              <a className="font-semibold">Search</a>
+            </Link>
+          </li>
         </div>
       </ul>
     </nav>
