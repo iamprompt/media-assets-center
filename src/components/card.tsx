@@ -25,6 +25,11 @@ const Card: NextPage<{ d: TMovie; layout?: 'h' | 'v' }> = ({ d, layout = 'h' }) 
             src={getImageUrl(layout === 'h' ? d.images.coverArt16X9 : d.images.coverArt, { ext: 'webp', width: 640 })}
             alt={d.id}
             layout="fill"
+            blurDataURL={getImageUrl(layout === 'h' ? d.images.coverArt16X9 : d.images.coverArt, {
+              ext: 'jpg',
+              width: 100,
+            })}
+            placeholder="blur"
           />
         </a>
       </Link>
