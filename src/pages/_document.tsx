@@ -10,7 +10,17 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          {[
+            'is1-ssl.mzstatic.com',
+            'is2-ssl.mzstatic.com',
+            'is3-ssl.mzstatic.com',
+            'is4-ssl.mzstatic.com',
+            'is5-ssl.mzstatic.com',
+          ].map((l) => (
+            <link rel="preconnect" href={l} key={l} />
+          ))}
+        </Head>
         <body className="bg-[#f5f5f7]">
           <Main />
           <NextScript />
