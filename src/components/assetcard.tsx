@@ -24,14 +24,20 @@ const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [k
             className="bg-green-600 py-2 px-3 rounded-full text-white"
             onClick={() => saveAs(getImageUrl(img, { ext: 'jpg' }), `${cId}-${key}.jpg`)}
           >
-            ดาวน์โหลด
+            JPG
+          </button>
+          <button
+            className="bg-green-600 py-2 px-3 rounded-full text-white"
+            onClick={() => saveAs(getImageUrl(img, { ext: 'png' }), `${cId}-${key}.png`)}
+          >
+            PNG
           </button>
           {img.supportsLayeredImage && (
             <button
               className="bg-green-600 py-2 px-3 rounded-full text-white"
               onClick={() => saveAs(getImageUrl(img, { ext: 'lsr' }), `${cId}-${key}.zip`)}
             >
-              ดาวน์โหลดเลเยอร์
+              LSR
             </button>
           )}
         </div>
