@@ -97,7 +97,7 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">ค้นหา</span>
               <input
                 type="text"
-                className="w-full rounded-xl border-gray-200 focus:border-gray-500 ring-0 p-2 pl-16 pr-60"
+                className="w-full rounded-xl border-gray-200 focus:border-gray-500 ring-0 p-2 pl-16 pr-16"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
