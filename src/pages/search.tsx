@@ -1,13 +1,12 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
 import Layout from '../components/common/layout'
-import { APPLE_TV_API } from '../utils/helpers'
 import Card from '../components/card'
-import { useCallback, useEffect, useState } from 'react'
-import { SearchResponse } from '../@types/atv-search-response'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import REGIONS from '../utils/constant/region'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { ResultItem, SearchResultResponse } from '../@types/api/atv-search'
+import { ResponseProps } from '../@types/api/common'
 
 export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
   const q = query?.q && !Array.isArray(query.q) ? query.q : undefined
@@ -21,12 +20,17 @@ export const getServerSideProps = async ({ query }: GetServerSidePropsContext) =
 
   if (q) {
     const {
-      data: { data },
-    } = await APPLE_TV_API.SEARCH_MEDIA({
-      country: country,
-      query: q,
+      data: {
+        payload: { result },
+      },
+    } = await axios.get<ResponseProps<SearchResultResponse>>('/api/search', {
+      params: {
+        query: q,
+        country: country,
+        locale: locale,
+      },
     })
-    return { props: { data, q: q, country: country?.toUpperCase(), locale: locale } }
+    return { props: { data: result, q: q, country: country?.toUpperCase(), locale: locale } }
   }
 
   return {
@@ -35,7 +39,7 @@ export const getServerSideProps = async ({ query }: GetServerSidePropsContext) =
 }
 
 const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ data, q, country, locale }) => {
-  const [d, setD] = useState<SearchResponse | undefined>(data)
+  const [d, setD] = useState<ResultItem | undefined>(data)
 
   const [searchText, setSearchText] = useState<string>(q || '')
   const [searchCountry, setSearchCountry] = useState<string>(country || 'TH')
@@ -50,10 +54,15 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault()
     try {
-      const { data } = await axios.get<SearchResponse>('/api/search', {
+      const {
+        data: {
+          payload: { result },
+        },
+      } = await axios.get<ResponseProps<SearchResultResponse>>('/api/search', {
         params: {
           query: searchText,
           country: searchCountry,
+          locale: searchLocale,
         },
       })
 
@@ -61,12 +70,12 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
       setCurrentSearchLocale(searchLocale)
       setCurrentSearchCountry(searchCountry)
 
-      setD(data)
+      setD(result)
 
-      const newRoute = {
-        pathname: '/search',
-        query: { q: searchText, country: searchCountry, locale: searchLocale },
-      }
+      // const newRoute = {
+      //   pathname: '/search',
+      //   query: { q: searchText, country: searchCountry, locale: searchLocale },
+      // }
       // push(newRoute, newRoute, { shallow: true })
     } catch (error) {
       console.log(error)
@@ -80,7 +89,7 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
 
   return (
     <Layout>
-      <div className="pt-5 px-5">
+      <div className="pt-5 px-5 pb-10">
         <form>
           <div className="flex flex-col w-10/12 md:w-2/3 mx-auto space-y-5">
             <h1 className="text-4xl font-bold text-center">Search</h1>
@@ -126,20 +135,29 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
         {d && (
           <div className="mt-10">
             <div className="text-center space-y-3 mb-5">
-              <h1 className="font-bold font-headline text-2xl">Search Result for</h1>
+              <h1 className="font-bold font-headline text-2xl">ผลการค้นหาสำหรับ</h1>
               <h2 className="font-bold font-headline text-4xl">{currentSearchText}</h2>
+              <h2 className="font-headline text-1xl">{`${REGIONS[currentSearchCountry.toUpperCase()].name} - ${
+                REGIONS[currentSearchCountry.toUpperCase()].langs[currentSearchLocale]
+              }`}</h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {d.canvas.shelves.map((shelf) => {
-                if (!['uts.col.search.SH', 'uts.col.search.MV'].includes(shelf.id)) return null
-                return shelf.items.map((item) => (
-                  <Card
-                    // @ts-expect-error
-                    d={item}
-                    key={item.id}
-                    option={{ country: currentSearchCountry, locale: currentSearchLocale }}
-                  />
-                ))
+            <div className="space-y-10">
+              {Object.entries(d).map(([shelfId, shelf]) => {
+                return (
+                  <div key={shelfId}>
+                    <h2 className="font-bold text-4xl mb-5">{shelf.title}</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                      {Object.entries(shelf.items).map(([cId, item]) => (
+                        <Card
+                          cId={cId}
+                          d={item}
+                          key={cId}
+                          option={{ country: currentSearchCountry, locale: currentSearchLocale }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )
               })}
             </div>
           </div>

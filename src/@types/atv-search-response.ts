@@ -25,7 +25,8 @@ export type Shelf = {
   nextToken: null
 }
 
-export type ShelfItem = TMovie | TShow | TPerson | TBrand
+export type ShelfItem = TMovie | TShow
+// export type ShelfItem = TMovie | TShow | TPerson | TBrand
 
 export type TMovie = ItemCommon & ItemMedia
 export type TShow = ItemCommon & ItemMedia

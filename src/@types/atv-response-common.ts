@@ -1,3 +1,4 @@
+import { ItemResponse } from './atv-item-response'
 import { SearchResponse } from './atv-search-response'
 
 export type AppleMediaResponse<T extends keyof ResponseTypes> = {
@@ -6,7 +7,7 @@ export type AppleMediaResponse<T extends keyof ResponseTypes> = {
 
 type ResponseTypes = {
   searchTV: SearchResponse
-  getTV: any
+  getTV: ItemResponse
 }
 
 export type Metrics = {

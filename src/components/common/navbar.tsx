@@ -7,7 +7,7 @@ type Props = {
 
 const NavBar: NextPage<Props> = ({ className }) => {
   return (
-    <nav className="h-11 bg-black sticky inset-0 z-[100]">
+    <nav className="h-11 bg-black/90 sticky inset-0 z-[100]">
       <ul
         className={`text-white flex justify-between items-center h-full px-5 md:p-0${className ? ` ${className}` : ``}`}
       >

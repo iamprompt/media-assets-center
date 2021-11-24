@@ -50,3 +50,6 @@ export const getImageUrl = (img: ImageDetails, { ext = 'jpg', width, height }: I
     .replace('{c}', '')
     .replace('{f}', `${ext}`)
 }
+
+export const stringDefault = (str: string | Array<any> | undefined, defaultStr: string) =>
+  (str && Array.isArray(str)) || !str ? defaultStr : str
