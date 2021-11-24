@@ -7,17 +7,19 @@ type Props = {
 
 const NavBar: NextPage<Props> = ({ className }) => {
   return (
-    <nav className="h-11 bg-black/90 sticky inset-0 z-[100]">
+    <nav className="h-14 bg-white/70 sticky inset-0 z-[100] filter backdrop-blur-md">
       <ul
-        className={`text-white flex justify-between items-center h-full px-5 md:p-0${className ? ` ${className}` : ``}`}
+        className={`text-black flex justify-between items-center h-full px-5 md:p-0${className ? ` ${className}` : ``}`}
       >
-        <div>
-          <li className="font-bold">Apple TV Assets Center</li>
-        </div>
+        <li>
+          <Link href="/search" passHref={true}>
+            <a className="font-bold hover:text-gray-500">Apple TV Assets Center</a>
+          </Link>
+        </li>
         <div>
           <li>
             <Link href="/search" passHref={true}>
-              <a className="font-semibold">Search</a>
+              <a className="hover:text-gray-500">Search</a>
             </Link>
           </li>
         </div>
