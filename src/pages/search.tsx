@@ -52,6 +52,22 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
   const [searchLocale, setSearchLocale] = useState<string>(locale || 'th-TH')
   const [currentSearchLocale, setCurrentSearchLocale] = useState<string>(locale || 'th-TH')
 
+  useEffect(() => {
+    if (localStorage.getItem('selected_country')) {
+      setSearchCountry(localStorage.getItem('selected_country') as string)
+      setCurrentSearchCountry(localStorage.getItem('selected_country') as string)
+    }
+    if (localStorage.getItem('selected_locale')) {
+      setSearchLocale(localStorage.getItem('selected_locale') as string)
+      setCurrentSearchLocale(localStorage.getItem('selected_locale') as string)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('selected_country', searchCountry)
+    localStorage.setItem('selected_locale', searchLocale)
+  }, [searchCountry, searchLocale])
+
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault()
     try {
@@ -86,7 +102,7 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
   useEffect(() => {
     setAvailableLocale(REGIONS[searchCountry.toUpperCase()].langs)
     setSearchLocale(Object.keys(availableLocale)[0])
-  }, [searchCountry, availableLocale])
+  }, [searchCountry])
 
   return (
     <SEO title={currentSearchText ? `ผลการค้นหา ${currentSearchText}` : 'ค้นหา'}>
@@ -124,10 +140,9 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center w-5 h-full mr-3">
                   <button className="relative h-full w-full" type="submit" onClick={handleSearch}>
-                    <Image
+                    <img
                       src="data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg' data-svg='search'%3E%3Ccircle fill='none' stroke='%23000' stroke-width='1.1' cx='9' cy='9' r='7'%3E%3C/circle%3E%3Cpath fill='none' stroke='%23000' stroke-width='1.1' d='M14,14 L18,18 L14,14 Z'%3E%3C/path%3E%3C/svg%3E"
                       alt="Search"
-                      layout="fill"
                     />
                   </button>
                 </span>
