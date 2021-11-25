@@ -19,17 +19,10 @@ const Card: NextPage<Props> = ({ cId, d, layout = 'h', option: { locale = 'th-TH
           layout === 'h' ? `aspect-h-9 aspect-w-16` : `aspect-w-2 aspect-h-3`
         }`}
       >
-        <Image
-          className="rounded-xl"
+        <img
+          className="rounded-xl object-cover"
           src={getImageUrl(layout === 'h' ? d.images.coverArt16X9 : d.images.coverArt, { ext: 'webp', width: 640 })}
           alt={cId}
-          layout="fill"
-          blurDataURL={getImageUrl(layout === 'h' ? d.images.coverArt16X9 : d.images.coverArt, {
-            ext: 'jpg',
-            width: 100,
-          })}
-          placeholder="blur"
-          objectFit="cover"
         />
         <div className="text-white w-full h-full absolute inset-0 z-10 from-black/80 to-black/0 bg-gradient-to-t rounded-xl bg-opacity-0 opacity-0 hover:bg-opacity-70 hover:opacity-100 transition-all group flex flex-col justify-end p-3">
           {/* <div className="absolute inset-0 m-3">

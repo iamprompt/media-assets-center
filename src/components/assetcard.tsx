@@ -1,9 +1,6 @@
 import { saveAs } from 'file-saver'
 import { NextPage } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
 import { ImageDetails } from '../@types/atv-response-common'
-import { ShelfItem, TMovie } from '../@types/atv-search-response'
 import { ImageType } from '../utils/constant/constant'
 import { getImageUrl } from '../utils/helpers'
 
@@ -43,14 +40,8 @@ const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [k
         </div>
       </div>
 
-      <div className="relative col-span-1 md:col-span-2 flex h-64 w-full md:h-full md:w-2/3">
-        <Image
-          className="rounded-xl"
-          src={getImageUrl(img, { ext: 'webp', width: 640 })}
-          alt={key}
-          layout="fill"
-          objectFit="contain"
-        />
+      <div className="col-span-1 md:col-span-2 flex rounded-xl justify-center h-64 w-full md:h-full md:w-2/3">
+        <img className="rounded-xl object-contain" src={getImageUrl(img, { ext: 'webp', width: 640 })} alt={key} />
       </div>
     </li>
   )

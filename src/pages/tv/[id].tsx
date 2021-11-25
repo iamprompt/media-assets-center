@@ -49,7 +49,7 @@ const ItemPage: NextPage<{
       <Layout>
         <div>
           <div className="aspect-h-9 aspect-w-16 rounded-b-xl">
-            <Image src={getImageUrl(result.images.coverArt16X9)} alt="" layout="fill" className="rounded-b-xl" />
+            <img src={getImageUrl(result.images.coverArt16X9)} alt="" className="rounded-b-xl object-cover" />
           </div>
 
           <div className="px-5 mb-20 space-y-10">
