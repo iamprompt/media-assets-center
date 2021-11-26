@@ -3,7 +3,7 @@ import Layout from '../components/common/layout'
 import Card from '../components/card'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import REGIONS from '../utils/constant/region'
+import REGIONS from '../utils/apple-tv/region'
 import Image from 'next/image'
 import { ResultItem, SearchResultResponse } from '../@types/api/atv-search'
 import { ResponseProps } from '../@types/api/common'
@@ -11,6 +11,7 @@ import SEO from '../components/common/seo'
 
 import AppleTVIcon from '../assets/icon/apple-tv/icon'
 import DPlusHotstarIcon from '../assets/icon/hotstar/icon'
+
 import { stringDefault } from '../utils/helpers'
 
 export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
@@ -89,7 +90,7 @@ const SearchPage: NextPage<{
         data: {
           payload: { result },
         },
-      } = await axios.get<ResponseProps<SearchResultResponse>>('/api/search', {
+      } = await axios.get<ResponseProps<SearchResultResponse>>('/api/apple-tv/search', {
         params: {
           query: searchText,
           country: searchCountry,

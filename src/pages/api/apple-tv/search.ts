@@ -1,8 +1,8 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { SearchResultResponse } from '../../@types/api/atv-search'
-import { ResponseProps } from '../../@types/api/common'
-import { APPLE_TV_API } from '../../utils/helpers'
+import { SearchResultResponse } from '../../../@types/api/atv-search'
+import { ResponseProps } from '../../../@types/api/common'
+import { APPLE_TV_API } from '../../../utils/apple-tv/helpers'
 
 const SearchAPI = async (req: NextApiRequest, res: NextApiResponse<ResponseProps<SearchResultResponse | string>>) => {
   const {

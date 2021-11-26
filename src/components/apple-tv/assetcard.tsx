@@ -1,8 +1,8 @@
 import { saveAs } from 'file-saver'
 import { NextPage } from 'next'
 import { ImageDetails } from '../../@types/atv-response-common'
-import { ImageType } from '../../utils/constant/constant'
-import { getImageUrl } from '../../utils/helpers'
+import { ImageType } from '../../utils/apple-tv/constant'
+import { getImageUrl } from '../../utils/apple-tv/helpers'
 
 const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [key, img], cId }) => {
   const k = key as keyof typeof ImageType

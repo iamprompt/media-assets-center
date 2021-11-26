@@ -1,10 +1,11 @@
 import type { GetServerSidePropsContext, GetServerSidePropsResult, InferGetServerSidePropsType, NextPage } from 'next'
 import Layout from '../../components/common/layout'
-import { getImageUrl, stringDefault } from '../../utils/helpers'
+import { getImageUrl } from '../../utils/apple-tv/helpers'
+import { stringDefault } from '../../utils/helpers'
 import Link from 'next/link'
 import Card from '../../components/card'
 import AssetCard from '../../components/apple-tv/assetcard'
-import REGIONS from '../../utils/constant/region'
+import REGIONS from '../../utils/apple-tv/region'
 import axios from 'axios'
 import { ResponseProps } from '../../@types/api/common'
 import { ProductResultResponse } from '../../@types/api/atv-product'
@@ -13,7 +14,7 @@ import dayjs from 'dayjs'
 import SEO from '../../components/common/seo'
 
 export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
-  const platform = stringDefault(query?.platform, '')
+  const platform = stringDefault(query?.platform, 'apple-tv')
   const id = stringDefault(query?.id, '')
   const country = stringDefault(query?.country, 'TH')
   const locale = stringDefault(query?.locale, Object.keys(REGIONS[country.toUpperCase()].langs)[0])
@@ -21,7 +22,7 @@ export const getServerSideProps = async ({ query }: GetServerSidePropsContext) =
   try {
     const {
       data: { payload },
-    } = await axios.get<ResponseProps<ProductResultResponse>>('/api/product', {
+    } = await axios.get<ResponseProps<ProductResultResponse>>(`/api/${platform}/product`, {
       params: {
         cId: id,
         country: country,

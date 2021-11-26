@@ -2,7 +2,7 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SearchItem } from '../@types/api/atv-search'
-import { getImageUrl } from '../utils/helpers'
+import { getImageUrl } from '../utils/apple-tv/helpers'
 
 type Props = {
   cId: string

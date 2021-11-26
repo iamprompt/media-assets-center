@@ -1,9 +1,9 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ProductResultResponse } from '../../@types/api/atv-product'
-import { ResponseProps } from '../../@types/api/common'
-import { ImagesFormat } from '../../utils/api/helpers'
-import { APPLE_TV_API } from '../../utils/helpers'
+import { ProductResultResponse } from '../../../@types/api/atv-product'
+import { ResponseProps } from '../../../@types/api/common'
+import { ImagesFormat } from '../../../utils/api/helpers'
+import { APPLE_TV_API } from '../../../utils/apple-tv/helpers'
 
 const ProductAPI = async (req: NextApiRequest, res: NextApiResponse<ResponseProps<ProductResultResponse | string>>) => {
   const {
