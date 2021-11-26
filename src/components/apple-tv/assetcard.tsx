@@ -1,14 +1,14 @@
 import { saveAs } from 'file-saver'
 import { NextPage } from 'next'
-import { ImageDetails } from '../@types/atv-response-common'
-import { ImageType } from '../utils/constant/constant'
-import { getImageUrl } from '../utils/helpers'
+import { ImageDetails } from '../../@types/atv-response-common'
+import { ImageType } from '../../utils/constant/constant'
+import { getImageUrl } from '../../utils/helpers'
 
 const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [key, img], cId }) => {
   const k = key as keyof typeof ImageType
 
   return (
-    <li className={`w-full h-96 flex flex-col items-center md:items-start md:flex-row gap-4`}>
+    <li className={`w-full max-h-96 flex flex-col items-center md:items-start md:flex-row gap-4`}>
       <div className="w-full md:w-1/3">
         <div>
           <p className="font-headline font-medium text-lg">{ImageType[k]}</p>
@@ -40,8 +40,8 @@ const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [k
         </div>
       </div>
 
-      <div className="col-span-1 md:col-span-2 flex rounded-xl justify-center h-64 w-full md:h-full md:w-2/3">
-        <img className="rounded-xl object-contain" src={getImageUrl(img, { ext: 'webp', width: 640 })} alt={key} />
+      <div className="col-span-1 md:col-span-2 flex justify-center max-h-64 w-full md:h-full md:w-2/3">
+        <img className="object-contain" src={getImageUrl(img, { ext: 'webp', width: 640 })} alt={key} />
       </div>
     </li>
   )

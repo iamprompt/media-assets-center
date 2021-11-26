@@ -9,17 +9,17 @@ import { ResultItem, SearchResultResponse } from '../@types/api/atv-search'
 import { ResponseProps } from '../@types/api/common'
 import SEO from '../components/common/seo'
 
-export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
-  const q = query?.q && !Array.isArray(query.q) ? query.q : undefined
-  const country = query?.country && !Array.isArray(query.country) ? query.country : 'TH'
-  const locale =
-    query?.locale && !Array.isArray(query.locale)
-      ? query.locale
-      : country
-      ? Object.keys(REGIONS[country.toUpperCase()].langs)[0]
-      : 'th-TH'
+import AppleTVIcon from '../assets/icon/apple-tv/icon'
+import DPlusHotstarIcon from '../assets/icon/hotstar/icon'
+import { stringDefault } from '../utils/helpers'
 
-  if (q) {
+export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
+  const platform = stringDefault(query?.platform, 'apple-tv')
+  const q = stringDefault(query?.q, '')
+  const country = stringDefault(query?.country, 'TH')
+  const locale = stringDefault(query?.locale, Object.keys(REGIONS[country.toUpperCase()].langs)[0])
+
+  if (q !== '') {
     const {
       data: {
         payload: { result },
@@ -31,26 +31,37 @@ export const getServerSideProps = async ({ query }: GetServerSidePropsContext) =
         locale: locale,
       },
     })
-    return { props: { data: result, q: q, country: country?.toUpperCase(), locale: locale } }
+
+    return { props: { data: { result, q, country, locale, platform } } }
   }
 
   return {
-    props: {},
+    props: { data: { q, country, locale, platform } },
   }
 }
 
-const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ data, q, country, locale }) => {
-  const [d, setD] = useState<ResultItem | undefined>(data)
+const SearchPage: NextPage<{
+  data: {
+    platform: string
+    result: ResultItem
+    country: string
+    locale: string
+    q: string
+  }
+}> = ({ data: { result, q, country, locale, platform } }) => {
+  const [d, setD] = useState<ResultItem | undefined>(result)
 
-  const [searchText, setSearchText] = useState<string>(q || '')
-  const [searchCountry, setSearchCountry] = useState<string>(country || 'TH')
+  const [searchText, setSearchText] = useState<string>(q)
+  const [searchCountry, setSearchCountry] = useState<string>(country)
+  const [searchPlatform, setSearchPlatform] = useState<string>(platform)
 
-  const [currentSearchText, setCurrentSearchText] = useState<string>(q || '')
-  const [currentSearchCountry, setCurrentSearchCountry] = useState<string>(country || 'TH')
+  const [currentSearchText, setCurrentSearchText] = useState<string>(q)
+  const [currentSearchCountry, setCurrentSearchCountry] = useState<string>(country)
+  const [currentSearchPlatform, setCurrentSearchPlatform] = useState<string>(platform)
 
   const [availableLocale, setAvailableLocale] = useState<{ [key: string]: string }>({})
-  const [searchLocale, setSearchLocale] = useState<string>(locale || 'th-TH')
-  const [currentSearchLocale, setCurrentSearchLocale] = useState<string>(locale || 'th-TH')
+  const [searchLocale, setSearchLocale] = useState<string>(locale)
+  const [currentSearchLocale, setCurrentSearchLocale] = useState<string>(locale)
 
   useEffect(() => {
     if (localStorage.getItem('selected_country')) {
@@ -65,8 +76,11 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
 
   useEffect(() => {
     localStorage.setItem('selected_country', searchCountry)
+  }, [searchCountry])
+
+  useEffect(() => {
     localStorage.setItem('selected_locale', searchLocale)
-  }, [searchCountry, searchLocale])
+  }, [searchLocale])
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault()
@@ -100,8 +114,9 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
   }
 
   useEffect(() => {
-    setAvailableLocale(REGIONS[searchCountry.toUpperCase()].langs)
-    setSearchLocale(Object.keys(availableLocale)[0])
+    let selectedCountryLocale = REGIONS[searchCountry.toUpperCase()].langs
+    setAvailableLocale(selectedCountryLocale)
+    setSearchLocale(Object.keys(selectedCountryLocale)[0])
   }, [searchCountry])
 
   return (
@@ -111,6 +126,32 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
           <form>
             <div className="flex flex-col w-10/12 md:w-2/3 mx-auto space-y-5">
               <h1 className="text-4xl font-bold text-center">Search</h1>
+
+              <div className="grid grid-cols-2 mx-auto w-2/3 text-center">
+                <div className="p-3">
+                  <div
+                    className={`flex items-center justify-center filter ${
+                      searchPlatform === 'apple-tv' ? '' : 'grayscale opacity-20'
+                    } hover:grayscale-0 hover:opacity-100 cursor-pointer`}
+                    onClick={() => setSearchPlatform('apple-tv')}
+                  >
+                    <AppleTVIcon className="h-20 max-w-full" />
+                  </div>
+                  <span className="sr-only">Apple TV+</span>
+                </div>
+                <div className="p-3">
+                  <div
+                    className={`flex items-center justify-center filter ${
+                      searchPlatform === 'disneyplus-hotstar' ? '' : 'grayscale opacity-20'
+                    } hover:grayscale-0 hover:opacity-100 cursor-pointer`}
+                    onClick={() => setSearchPlatform('disneyplus-hotstar')}
+                  >
+                    <DPlusHotstarIcon className="h-20 max-w-full" />
+                  </div>
+                  <span className="sr-only">Disney+ Hotstar</span>
+                </div>
+              </div>
+
               <div className="mt-1 relative rounded-xl shadow-sm">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">ค้นหา</span>
                 <input

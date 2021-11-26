@@ -12,8 +12,8 @@ const NavBar: NextPage<Props> = ({ className }) => {
         className={`text-black flex justify-between items-center h-full px-5 md:p-0${className ? ` ${className}` : ``}`}
       >
         <li>
-          <Link href="/search" passHref={true}>
-            <a className="font-bold hover:text-gray-500">Apple TV Assets Center</a>
+          <Link href="/" passHref={true}>
+            <a className="font-bold hover:text-gray-500">Media Assets Center</a>
           </Link>
         </li>
         <div>

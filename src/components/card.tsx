@@ -13,7 +13,7 @@ type Props = {
 
 const Card: NextPage<Props> = ({ cId, d, layout = 'h', option: { locale = 'th-TH', country = 'TH' } = {} }) => {
   return (
-    <Link href={`/tv/${cId}?country=${country}&locale=${locale}`} passHref={true}>
+    <Link href={`/apple-tv/${cId}?country=${country}&locale=${locale}`} passHref={true}>
       <a
         className={`w-full relative rounded-xl shadow-md ${
           layout === 'h' ? `aspect-h-9 aspect-w-16` : `aspect-w-2 aspect-h-3`

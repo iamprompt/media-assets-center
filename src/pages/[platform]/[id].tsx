@@ -1,20 +1,19 @@
 import type { GetServerSidePropsContext, GetServerSidePropsResult, InferGetServerSidePropsType, NextPage } from 'next'
 import Layout from '../../components/common/layout'
-import { APPLE_TV_API, getImageUrl, stringDefault } from '../../utils/helpers'
-import Image from 'next/image'
+import { getImageUrl, stringDefault } from '../../utils/helpers'
 import Link from 'next/link'
 import Card from '../../components/card'
-import AssetCard from '../../components/assetcard'
+import AssetCard from '../../components/apple-tv/assetcard'
 import REGIONS from '../../utils/constant/region'
 import axios from 'axios'
 import { ResponseProps } from '../../@types/api/common'
 import { ProductResultResponse } from '../../@types/api/atv-product'
 import dayjs from 'dayjs'
 
-import WatchOnAppleTVBadge from '../../assets/watch-on-apple-tv.svg'
 import SEO from '../../components/common/seo'
 
-export const getServerSideProps = async ({ params, query }: GetServerSidePropsContext) => {
+export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
+  const platform = stringDefault(query?.platform, '')
   const id = stringDefault(query?.id, '')
   const country = stringDefault(query?.country, 'TH')
   const locale = stringDefault(query?.locale, Object.keys(REGIONS[country.toUpperCase()].langs)[0])
@@ -29,17 +28,28 @@ export const getServerSideProps = async ({ params, query }: GetServerSidePropsCo
         locale: locale,
       },
     })
-    return { props: { data: payload, country: country, locale: locale } }
+
+    return { props: { data: { platform, payload, country, locale } } }
   } catch (err) {
     console.log(err)
   }
 }
 
 const ItemPage: NextPage<{
-  data: ProductResultResponse
-  country: string
-  locale: string
-}> = ({ data: { id, result }, country, locale }) => {
+  data: {
+    platform: string
+    payload: ProductResultResponse
+    country: string
+    locale: string
+  }
+}> = ({
+  data: {
+    platform,
+    payload: { result },
+    country,
+    locale,
+  },
+}) => {
   return (
     <SEO
       title={result.title}
