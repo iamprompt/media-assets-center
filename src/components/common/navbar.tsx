@@ -13,7 +13,7 @@ const NavBar: NextPage<Props> = ({ className }) => {
       >
         <li>
           <Link href="/search" passHref={true}>
-            <a className="font-bold hover:text-gray-500">Apple TV Assets Center</a>
+            <a className="font-bold hover:text-gray-500">Media Assets Center</a>
           </Link>
         </li>
         <div>

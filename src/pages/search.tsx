@@ -8,18 +8,15 @@ import Image from 'next/image'
 import { ResultItem, SearchResultResponse } from '../@types/api/atv-search'
 import { ResponseProps } from '../@types/api/common'
 import SEO from '../components/common/seo'
+import { stringDefault } from '../utils/helpers'
 
 export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
-  const q = query?.q && !Array.isArray(query.q) ? query.q : undefined
-  const country = query?.country && !Array.isArray(query.country) ? query.country : 'TH'
-  const locale =
-    query?.locale && !Array.isArray(query.locale)
-      ? query.locale
-      : country
-      ? Object.keys(REGIONS[country.toUpperCase()].langs)[0]
-      : 'th-TH'
+  const platform = stringDefault(query?.platform, 'apple-tv')
+  const q = stringDefault(query?.q, '')
+  const country = stringDefault(query?.country, 'TH')
+  const locale = stringDefault(query?.locale, Object.keys(REGIONS[country.toUpperCase()].langs)[0])
 
-  if (q) {
+  if (q !== '') {
     const {
       data: {
         payload: { result },
@@ -31,26 +28,30 @@ export const getServerSideProps = async ({ query }: GetServerSidePropsContext) =
         locale: locale,
       },
     })
-    return { props: { data: result, q: q, country: country?.toUpperCase(), locale: locale } }
+    return { props: { data: { result, q, country, locale, platform } } }
   }
 
   return {
-    props: {},
+    props: { data: { result: null, q, country, locale, platform } },
   }
 }
 
-const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ data, q, country, locale }) => {
-  const [d, setD] = useState<ResultItem | undefined>(data)
+const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
+  data: { result, q, country, locale, platform },
+}) => {
+  const [d, setD] = useState<ResultItem | null>(result)
 
-  const [searchText, setSearchText] = useState<string>(q || '')
-  const [searchCountry, setSearchCountry] = useState<string>(country || 'TH')
+  const [searchText, setSearchText] = useState<string>(q)
+  const [searchCountry, setSearchCountry] = useState<string>(country)
+  const [searchPlatform, setSearchPlatform] = useState<string>(platform)
 
-  const [currentSearchText, setCurrentSearchText] = useState<string>(q || '')
-  const [currentSearchCountry, setCurrentSearchCountry] = useState<string>(country || 'TH')
+  const [currentSearchText, setCurrentSearchText] = useState<string>(q)
+  const [currentSearchCountry, setCurrentSearchCountry] = useState<string>(country)
+  const [currentSearchPlatform, setCurrentSearchPlatform] = useState<string>(platform)
 
   const [availableLocale, setAvailableLocale] = useState<{ [key: string]: string }>({})
-  const [searchLocale, setSearchLocale] = useState<string>(locale || 'th-TH')
-  const [currentSearchLocale, setCurrentSearchLocale] = useState<string>(locale || 'th-TH')
+  const [searchLocale, setSearchLocale] = useState<string>(locale)
+  const [currentSearchLocale, setCurrentSearchLocale] = useState<string>(locale)
 
   useEffect(() => {
     if (localStorage.getItem('selected_country')) {
@@ -88,20 +89,17 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
       setCurrentSearchCountry(searchCountry)
 
       setD(result)
-
-      // const newRoute = {
-      //   pathname: '/search',
-      //   query: { q: searchText, country: searchCountry, locale: searchLocale },
-      // }
-      // push(newRoute, newRoute, { shallow: true })
     } catch (error) {
       console.log(error)
     }
   }
 
   useEffect(() => {
-    setAvailableLocale(REGIONS[searchCountry.toUpperCase()].langs)
-    setSearchLocale(Object.keys(availableLocale)[0])
+    const selectedCountryLocale = REGIONS[searchCountry.toUpperCase()].langs
+    console.log(selectedCountryLocale)
+
+    setAvailableLocale(selectedCountryLocale)
+    setSearchLocale(Object.keys(selectedCountryLocale)[0])
   }, [searchCountry])
 
   return (
@@ -166,6 +164,7 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                         {Object.entries(shelf.items).map(([cId, item]) => (
                           <Card
+                            platform={currentSearchPlatform}
                             cId={cId}
                             d={item}
                             key={cId}

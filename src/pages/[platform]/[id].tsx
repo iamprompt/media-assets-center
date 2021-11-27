@@ -11,7 +11,6 @@ import { ResponseProps } from '../../@types/api/common'
 import { ProductResultResponse } from '../../@types/api/atv-product'
 import dayjs from 'dayjs'
 
-import WatchOnAppleTVBadge from '../../assets/watch-on-apple-tv.svg'
 import SEO from '../../components/common/seo'
 
 export const getServerSideProps = async ({ params, query }: GetServerSidePropsContext) => {
@@ -39,7 +38,7 @@ const ItemPage: NextPage<{
   data: ProductResultResponse
   country: string
   locale: string
-}> = ({ data: { id, result }, country, locale }) => {
+}> = ({ data: { result }, country, locale }) => {
   return (
     <SEO
       title={result.title}
