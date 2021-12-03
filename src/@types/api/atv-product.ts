@@ -13,6 +13,13 @@ export type ProductItem = SearchItem & {
   related?: {
     [key: string]: RelatedItem
   }
+  trailers?: Trailer[]
+}
+
+export type Trailer = {
+  title: string
+  hlsUrl: string
+  duration: number
 }
 
 export type RolePerson = {

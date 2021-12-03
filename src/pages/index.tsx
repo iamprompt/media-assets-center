@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('/search')
+    router.push('/apple-tv/search')
   }, [])
 
   return (

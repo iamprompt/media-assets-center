@@ -1,9 +1,9 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ProductResultResponse } from '../../@types/api/atv-product'
-import { ResponseProps } from '../../@types/api/common'
-import { ImagesFormat } from '../../utils/api/helpers'
-import { APPLE_TV_API } from '../../utils/helpers'
+import { ProductResultResponse } from '../../../@types/api/atv-product'
+import { ResponseProps } from '../../../@types/api/common'
+import { ImagesFormat } from '../../../utils/api/helpers'
+import { APPLE_TV_API } from '../../../utils/platforms/apple-tv'
 
 const ProductAPI = async (req: NextApiRequest, res: NextApiResponse<ResponseProps<ProductResultResponse | string>>) => {
   const {
@@ -16,7 +16,7 @@ const ProductAPI = async (req: NextApiRequest, res: NextApiResponse<ResponseProp
   try {
     const {
       data: {
-        data: { content, related, roles },
+        data: { content, related, roles, trailers },
       },
     } = await APPLE_TV_API.GET_MEDIA_INFO({
       cId: cId,
@@ -57,6 +57,15 @@ const ProductAPI = async (req: NextApiRequest, res: NextApiResponse<ResponseProp
         title: relatedItem.title,
         images: ImagesFormat(relatedItem.images, ['coverArt', 'coverArt16X9']),
       }
+    }
+
+    for (const trailer of trailers) {
+      if (!payload.result.trailers) payload.result.trailers = []
+      payload.result.trailers.push({
+        title: trailer.title,
+        hlsUrl: trailer.assets.hlsUrl,
+        duration: trailer.duration,
+      })
     }
 
     res.status(200).json({ success: true, payload })

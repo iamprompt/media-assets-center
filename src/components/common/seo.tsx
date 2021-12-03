@@ -11,7 +11,7 @@ const SEO: NextPage<Props> = ({ children, title, description = 'The center of th
   return (
     <>
       <Head>
-        <title>{title ? `${title} - Apple TV Assets Center` : 'Apple TV Assets Center'}</title>
+        <title>{title ? `${title} - Media Assets Center` : 'Media Assets Center'}</title>
         <meta name="description" content={description} />
       </Head>
       {children}

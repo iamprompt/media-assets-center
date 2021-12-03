@@ -1,14 +1,14 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
-import Layout from '../components/common/layout'
-import Card from '../components/card'
+import Layout from '../../components/common/layout'
+import Card from '../../components/card'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import REGIONS from '../utils/constant/region'
+import REGIONS from '../../utils/constant/region'
 import Image from 'next/image'
-import { ResultItem, SearchResultResponse } from '../@types/api/atv-search'
-import { ResponseProps } from '../@types/api/common'
-import SEO from '../components/common/seo'
-import { stringDefault } from '../utils/helpers'
+import { ResultItem, SearchResultResponse } from '../../@types/api/atv-search'
+import { ResponseProps } from '../../@types/api/common'
+import SEO from '../../components/common/seo'
+import { stringDefault } from '../../utils/helpers'
 
 export const getServerSideProps = async ({ query }: GetServerSidePropsContext) => {
   const platform = stringDefault(query?.platform, 'apple-tv')
@@ -21,7 +21,7 @@ export const getServerSideProps = async ({ query }: GetServerSidePropsContext) =
       data: {
         payload: { result },
       },
-    } = await axios.get<ResponseProps<SearchResultResponse>>('/api/search', {
+    } = await axios.get<ResponseProps<SearchResultResponse>>('/api/apple-tv/search', {
       params: {
         query: q,
         country: country,
@@ -76,7 +76,7 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
         data: {
           payload: { result },
         },
-      } = await axios.get<ResponseProps<SearchResultResponse>>('/api/search', {
+      } = await axios.get<ResponseProps<SearchResultResponse>>('/api/apple-tv/search', {
         params: {
           query: searchText,
           country: searchCountry,
