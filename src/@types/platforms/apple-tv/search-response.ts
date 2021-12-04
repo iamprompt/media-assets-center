@@ -1,5 +1,5 @@
-import { Trailer } from './atv-item-response'
-import { AssetType, Images, Metrics, Rating, RolesSummary } from './atv-response-common'
+import { Trailer } from './product-response'
+import { AssetType, Images, Metrics, Rating, RolesSummary } from './response-common'
 
 export type SearchResponse = {
   q: string // Query

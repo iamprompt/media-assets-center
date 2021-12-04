@@ -1,6 +1,5 @@
-import { Metrics } from './apple-search-response'
-import { PartialImages } from './atv-response-common'
-import { TMovie } from './atv-search-response'
+import { Metrics, PartialImages } from './response-common'
+import { TMovie } from './search-response'
 
 export type ItemResponse = {
   content: TMovie

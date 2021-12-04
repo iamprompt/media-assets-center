@@ -1,4 +1,4 @@
-import { AssetType } from '../atv-response-common'
+import { AssetType } from '../response-common'
 import { Images, SearchItem } from './atv-search'
 
 export type ProductResultResponse = {

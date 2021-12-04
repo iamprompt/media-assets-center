@@ -13,7 +13,7 @@ import AssetCard from '../../../components/assetcard'
 import REGIONS from '../../../utils/constant/region'
 import axios from 'axios'
 import { ResponseProps } from '../../../@types/api/common'
-import { ProductResultResponse } from '../../../@types/api/atv-product'
+import { ProductResultResponse } from '../../../@types/platforms/apple-tv/api/atv-product'
 import dayjs from 'dayjs'
 
 import SEO from '../../../components/common/seo'

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { SearchResultResponse } from '../../../@types/api/atv-search'
+import { SearchResultResponse } from '../../../@types/platforms/apple-tv/api/atv-search'
 import { ResponseProps } from '../../../@types/api/common'
 import { APPLE_TV_API } from '../../../utils/platforms/apple-tv'
 

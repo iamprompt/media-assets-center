@@ -1,5 +1,5 @@
-import { ItemResponse } from './atv-item-response'
-import { SearchResponse } from './atv-search-response'
+import { ItemResponse } from './product-response'
+import { SearchResponse } from './search-response'
 
 export type AppleMediaResponse<T extends keyof ResponseTypes> = {
   data: ResponseTypes[T]

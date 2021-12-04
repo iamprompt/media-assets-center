@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AppleMediaResponse, ImageDetails } from '../../@types/atv-response-common'
+import { AppleMediaResponse, ImageDetails } from '../../@types/platforms/apple-tv/response-common'
 import { APPLE_MEDIA_BASE_URL, APPLE_TV_API_ENDPOINTS } from '../constant/constant'
 
 export const APPLE_MEDIA_INSTANCE = axios.create({

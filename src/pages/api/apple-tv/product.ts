@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ProductResultResponse } from '../../../@types/api/atv-product'
+import { ProductResultResponse } from '../../../@types/platforms/apple-tv/api/atv-product'
 import { ResponseProps } from '../../../@types/api/common'
 import { ImagesFormat } from '../../../utils/api/helpers'
 import { APPLE_TV_API } from '../../../utils/platforms/apple-tv'

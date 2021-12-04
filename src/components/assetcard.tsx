@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { NextPage } from 'next'
-import { ImageDetails } from '../@types/atv-response-common'
+import { ImageDetails } from '../@types/platforms/apple-tv/response-common'
 import { ImageType } from '../utils/constant/constant'
 import { getImageUrl } from '../utils/platforms/apple-tv'
 

@@ -1,4 +1,4 @@
-import { AssetType } from '../atv-response-common'
+import { AssetType } from '../response-common'
 
 export type SearchResultResponse = {
   q: string // Query

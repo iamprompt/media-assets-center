@@ -1,4 +1,4 @@
-import { Images } from '../../@types/api/atv-search'
+import { Images } from '../../@types/platforms/apple-tv/api/atv-search'
 
 export const ImagesFormat = (images: Images, filter: string[] = []) => {
   const result: Images = {}
