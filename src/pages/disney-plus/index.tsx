@@ -12,6 +12,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }: GetServe
   const slug = stringDefault(query?.slug, 'home')
   const region = stringDefault(query?.region, 'SG')
   const locale = stringDefault(query?.locale, 'en-US')
+  const label = stringDefault(query.label, '')
 
   try {
     const {
@@ -23,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }: GetServe
       },
     })
 
-    return { props: { data: payload, options: { region, locale } } }
+    return { props: { data: payload, options: { region, locale, label } } }
   } catch (err) {
     console.log(err)
   }
@@ -31,7 +32,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }: GetServe
   return { notFound: true }
 }
 
-const Home: NextPage<{ data: LandingResponse; options: { region: string; locale: string } }> = ({ data, options }) => {
+const Home: NextPage<{ data: LandingResponse; options: { region: string; locale: string; label: string } }> = ({
+  data,
+  options,
+}) => {
   const [landingItems, setLandingItems] = useState<LandingItem[]>(Object.values(data))
 
   return (
@@ -53,7 +57,9 @@ const Home: NextPage<{ data: LandingResponse; options: { region: string; locale:
                         <img
                           className="rounded-xl object-cover"
                           src={`${d.image.url}/badging?width=800&aspectRatio=1.78&format=jpeg${
-                            d.badging ? `&label=${d.badging}` : ''
+                            options.label || d.badging
+                              ? `&label=${options.label !== '' ? options.label : d.badging}`
+                              : ''
                           }`}
                           alt={d.name}
                         />
