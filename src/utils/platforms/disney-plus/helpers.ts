@@ -50,3 +50,23 @@ export const GET_TOKEN = async () => {
 
   console.log(data)
 }
+
+export const GET_COLLECTION_FROM_SLUG = async () => {
+  const collectionSubType = 'StandardCollection'
+  const apiVersion = '5.1'
+  const region = 'US'
+  const kidsModeEnabled = 'false'
+  const impliedMaturityRating = '1350'
+  const appLanguage = 'en-US'
+  const contentClass = 'home'
+  const slug = 'home'
+  try {
+    const { data } = await CONTENT_BAMGRID_INSTANCE.get(
+      `/Collection/${collectionSubType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${appLanguage}/contentClass/${contentClass}/slug/${slug}`
+    )
+
+    console.log(data.data.Collection.containers)
+  } catch (error) {
+    console.log(error)
+  }
+}
