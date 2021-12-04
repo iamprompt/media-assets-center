@@ -1,5 +1,8 @@
 import axios from 'axios'
 import { AssertionRequestResponse, TokenRequestResponse } from '../../../@types/platforms/disney-plus/auth-response'
+import { Collection } from '../../../@types/platforms/disney-plus/collection-response'
+import { DisneyPlusCommonResponse, DisneyPlusResponse } from '../../../@types/platforms/disney-plus/common-response'
+import { CuratedSet } from '../../../@types/platforms/disney-plus/curated-set-response'
 import { DPLUS_BASE_URL } from './constant'
 
 export const GLOBAL_BAMGRID_INSTANCE = axios.create({
@@ -51,21 +54,81 @@ export const GET_TOKEN = async () => {
   console.log(data)
 }
 
-export const GET_COLLECTION_FROM_SLUG = async () => {
-  const collectionSubType = 'StandardCollection'
-  const apiVersion = '5.1'
-  const region = 'US'
-  const kidsModeEnabled = 'false'
-  const impliedMaturityRating = '1350'
-  const appLanguage = 'en-US'
-  const contentClass = 'home'
-  const slug = 'home'
+type COLLECTION_SLUG_PROPS = {
+  collectionSubType?: string
+  apiVersion?: string
+  region?: string
+  kidsModeEnabled?: boolean
+  impliedMaturityRating?: string | number
+  appLanguage?: string
+  contentClass?: string
+  slug?: string
+}
+
+export const GET_COLLECTIONS_FROM_SLUG = async ({
+  collectionSubType = 'StandardCollection',
+  apiVersion = '5.1',
+  region = 'US',
+  kidsModeEnabled = false,
+  impliedMaturityRating = '1870',
+  appLanguage = 'en-US',
+  contentClass = 'home',
+  slug = 'home',
+}: COLLECTION_SLUG_PROPS) => {
   try {
-    const { data } = await CONTENT_BAMGRID_INSTANCE.get(
+    const {
+      data: {
+        data: {
+          Collection: { containers },
+        },
+      },
+    } = await CONTENT_BAMGRID_INSTANCE.get<DisneyPlusResponse<Collection>>(
       `/Collection/${collectionSubType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${appLanguage}/contentClass/${contentClass}/slug/${slug}`
     )
 
-    console.log(data.data.Collection.containers)
+    // console.log(containers)
+    return containers
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+type CURATED_SET_SLUG_PROPS = {
+  setType?: string
+  apiVersion?: string
+  region?: string
+  kidsModeEnabled?: boolean
+  impliedMaturityRating?: string | number
+  appLanguage?: string
+  setId?: string
+  pageSize?: number
+  page?: number
+}
+
+export const GET_CURATED_SET_FROM_ID = async ({
+  setType = 'CuratedSet',
+  apiVersion = '5.1',
+  region = 'US',
+  kidsModeEnabled = false,
+  impliedMaturityRating = '1870',
+  appLanguage = 'en-US',
+  setId = 'cea8af96-0472-4fce-be34-448940cef3df',
+  pageSize = 60,
+  page = 1,
+}: CURATED_SET_SLUG_PROPS) => {
+  try {
+    const {
+      data: {
+        data: {
+          CuratedSet: { items },
+        },
+      },
+    } = await CONTENT_BAMGRID_INSTANCE.get<DisneyPlusResponse<CuratedSet>>(
+      `/${setType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${appLanguage}/setId/${setId}/pageSize/${pageSize}/page/${page}`
+    )
+
+    // console.log(containers)
+    return items
   } catch (error) {
     console.log(error)
   }

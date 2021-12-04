@@ -1,6 +1,6 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
 import Layout from '../../components/common/layout'
-import Card from '../../components/card'
+import Card from '../../components/platform/apple-tv/card'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import REGIONS from '../../utils/platforms/apple-tv/region'
@@ -43,11 +43,9 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
 
   const [searchText, setSearchText] = useState<string>(q)
   const [searchCountry, setSearchCountry] = useState<string>(country)
-  const [searchPlatform, setSearchPlatform] = useState<string>(platform)
 
   const [currentSearchText, setCurrentSearchText] = useState<string>(q)
   const [currentSearchCountry, setCurrentSearchCountry] = useState<string>(country)
-  const [currentSearchPlatform, setCurrentSearchPlatform] = useState<string>(platform)
 
   const [availableLocale, setAvailableLocale] = useState<{ [key: string]: string }>({})
   const [searchLocale, setSearchLocale] = useState<string>(locale)
@@ -164,7 +162,6 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                         {Object.entries(shelf.items).map(([cId, item]) => (
                           <Card
-                            platform={currentSearchPlatform}
                             cId={cId}
                             d={item}
                             key={cId}
