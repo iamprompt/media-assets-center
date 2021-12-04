@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { NextPage } from 'next'
 import { ImageDetails } from '../@types/platforms/apple-tv/response-common'
-import { ImageType } from '../utils/constant/constant'
-import { getImageUrl } from '../utils/platforms/apple-tv'
+import { ImageType } from '../utils/platforms/apple-tv/constant'
+import { getImageUrl } from '../utils/platforms/apple-tv/helpers'
 
 const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [key, img], cId }) => {
   const k = key as keyof typeof ImageType

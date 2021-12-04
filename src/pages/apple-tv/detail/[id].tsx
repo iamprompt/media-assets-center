@@ -10,14 +10,14 @@ import { stringDefault } from '../../../utils/helpers'
 import Link from 'next/link'
 import Card from '../../../components/card'
 import AssetCard from '../../../components/assetcard'
-import REGIONS from '../../../utils/constant/region'
+import REGIONS from '../../../utils/platforms/apple-tv/region'
 import axios from 'axios'
 import { ResponseProps } from '../../../@types/api/common'
 import { ProductResultResponse } from '../../../@types/platforms/apple-tv/api/atv-product'
 import dayjs from 'dayjs'
 
 import SEO from '../../../components/common/seo'
-import { getImageUrl } from '../../../utils/platforms/apple-tv'
+import { getImageUrl } from '../../../utils/platforms/apple-tv/helpers'
 import { useEffect, useRef } from 'react'
 
 export const getServerSideProps: GetServerSideProps = async ({ query }: GetServerSidePropsContext) => {

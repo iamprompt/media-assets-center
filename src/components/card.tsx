@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { SearchItem } from '../@types/platforms/apple-tv/api/atv-search'
-import { getImageUrl } from '../utils/platforms/apple-tv'
+import { getImageUrl } from '../utils/platforms/apple-tv/helpers'
 
 type Props = {
   platform: string
