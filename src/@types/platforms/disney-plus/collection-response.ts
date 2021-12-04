@@ -48,7 +48,7 @@ export type Set = {
 }
 
 export type Text = {
-  title: {
+  [key: string]: {
     [key: string]: {
       [key: string]: {
         default: {

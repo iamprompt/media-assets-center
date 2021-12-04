@@ -3,9 +3,10 @@ export type LandingResponse = {
 }
 
 export type LandingItem = {
+  type: string
   badging: string | null | undefined
   name: string
-  encodedFamilyId: string | undefined
+  encodedId: string | null | undefined
   image: Image
 }
 

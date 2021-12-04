@@ -2,7 +2,8 @@ import axios from 'axios'
 import { AssertionRequestResponse, TokenRequestResponse } from '../../../@types/platforms/disney-plus/auth-response'
 import { Collection } from '../../../@types/platforms/disney-plus/collection-response'
 import { DisneyPlusCommonResponse, DisneyPlusResponse } from '../../../@types/platforms/disney-plus/common-response'
-import { CuratedSet } from '../../../@types/platforms/disney-plus/curated-set-response'
+import { CuratedSet } from '../../../@types/platforms/disney-plus/CuratedSet'
+import { DmcVideoBundle } from '../../../@types/platforms/disney-plus/DmcVideoBundle'
 import { DPLUS_BASE_URL } from './constant'
 
 export const GLOBAL_BAMGRID_INSTANCE = axios.create({
@@ -60,7 +61,7 @@ type COLLECTION_SLUG_PROPS = {
   region?: string
   kidsModeEnabled?: boolean
   impliedMaturityRating?: string | number
-  appLanguage?: string
+  locale?: string
   contentClass?: string
   slug?: string
 }
@@ -71,7 +72,7 @@ export const GET_COLLECTIONS_FROM_SLUG = async ({
   region = 'US',
   kidsModeEnabled = false,
   impliedMaturityRating = '1870',
-  appLanguage = 'en-US',
+  locale = 'en-US',
   contentClass = 'home',
   slug = 'home',
 }: COLLECTION_SLUG_PROPS) => {
@@ -83,7 +84,7 @@ export const GET_COLLECTIONS_FROM_SLUG = async ({
         },
       },
     } = await CONTENT_BAMGRID_INSTANCE.get<DisneyPlusResponse<Collection>>(
-      `/Collection/${collectionSubType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${appLanguage}/contentClass/${contentClass}/slug/${slug}`
+      `/Collection/${collectionSubType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${locale}/contentClass/${contentClass}/slug/${slug}`
     )
 
     // console.log(containers)
@@ -99,7 +100,7 @@ type CURATED_SET_SLUG_PROPS = {
   region?: string
   kidsModeEnabled?: boolean
   impliedMaturityRating?: string | number
-  appLanguage?: string
+  locale?: string
   setId?: string
   pageSize?: number
   page?: number
@@ -111,7 +112,7 @@ export const GET_CURATED_SET_FROM_ID = async ({
   region = 'US',
   kidsModeEnabled = false,
   impliedMaturityRating = '1870',
-  appLanguage = 'en-US',
+  locale = 'en-US',
   setId = 'cea8af96-0472-4fce-be34-448940cef3df',
   pageSize = 60,
   page = 1,
@@ -124,11 +125,47 @@ export const GET_CURATED_SET_FROM_ID = async ({
         },
       },
     } = await CONTENT_BAMGRID_INSTANCE.get<DisneyPlusResponse<CuratedSet>>(
-      `/${setType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${appLanguage}/setId/${setId}/pageSize/${pageSize}/page/${page}`
+      `/${setType}/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${locale}/setId/${setId}/pageSize/${pageSize}/page/${page}`
     )
 
     // console.log(containers)
     return items
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+type VIDEO_BUNDLE_PROPS = {
+  contentType?: string
+  apiVersion?: string
+  region?: string
+  kidsModeEnabled?: boolean
+  impliedMaturityRating?: string | number
+  locale?: string
+  setId?: string
+  encodedFamilyId?: string
+}
+
+export const GET_VIDEO_BUNDLE_FROM_ID = async ({
+  contentType = 'DmcVideoBundle',
+  apiVersion = '5.1',
+  region = 'US',
+  kidsModeEnabled = false,
+  impliedMaturityRating = '1870',
+  locale = 'en-US',
+  encodedFamilyId = '',
+}: VIDEO_BUNDLE_PROPS) => {
+  try {
+    const {
+      data: { data },
+    } = await CONTENT_BAMGRID_INSTANCE.get<DisneyPlusResponse<DmcVideoBundle>>(
+      `/${contentType}Bundle/version/${apiVersion}/region/${region}/audience/${kidsModeEnabled}/maturity/${impliedMaturityRating}/language/${locale}/${
+        contentType === 'DmcVideo' ? 'encodedFamilyId' : 'encodedSeriesId'
+      }/${encodedFamilyId}`
+    )
+
+    // console.log(containers)
+    return data
   } catch (error) {
     console.log(error)
   }
