@@ -23,7 +23,7 @@ const AssetCard: NextPage<{ d: [string, ImageDetails]; cId: string }> = ({ d: [k
     <li className={`w-full flex flex-col items-center md:items-start md:flex-row gap-4`}>
       <div className="w-full md:w-1/3">
         <div>
-          <p className="font-headline font-medium text-lg">{ImageType[k]}</p>
+          <p className="font-headline font-medium text-lg">{ImageType[k] || k}</p>
           <p className="font-text">
             ขนาด {img.width} x {img.height} พิกเซล
           </p>

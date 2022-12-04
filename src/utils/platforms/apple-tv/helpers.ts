@@ -24,11 +24,17 @@ export const APPLE_TV_API = {
         locale: locale,
         entityShow: entityShow,
       },
+      headers: {
+        'Accept-Encoding': 'identity',
+      },
     }),
   GET_MEDIA_INFO: ({ country = 'th', cId, locale = 'th-TH' }: Options & { cId: string }) =>
-    APPLE_MEDIA_INSTANCE.get<AppleMediaResponse<'getTV'>>(`${APPLE_TV_API_ENDPOINTS.GET_MEDIA_INFO(country)}/${cId}`, {
+    APPLE_MEDIA_INSTANCE.get(`${APPLE_TV_API_ENDPOINTS.GET_MEDIA_INFO(country)}/${cId}`, {
       params: {
         locale: locale,
+      },
+      headers: {
+        'Accept-Encoding': 'identity',
       },
     }),
 }

@@ -1,11 +1,11 @@
-import { NextComponentType } from 'next'
+import { ComponentProps, FC } from 'react'
 import NavBar from './navbar'
 
-const Layout: NextComponentType = ({ children }) => {
+const Layout: FC<ComponentProps<'main'>> = (props) => {
   return (
     <div>
       <NavBar className="max-w-screen-lg mx-auto" />
-      <main className="max-w-screen-lg mx-auto">{children}</main>
+      <main className="max-w-screen-lg mx-auto" {...props} />
     </div>
   )
 }

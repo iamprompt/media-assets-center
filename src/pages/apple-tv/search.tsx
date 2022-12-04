@@ -80,6 +80,9 @@ const SearchPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps
           country: searchCountry,
           locale: searchLocale,
         },
+        headers: {
+          'Accept-Encoding': 'identity',
+        },
       })
 
       setCurrentSearchText(searchText)

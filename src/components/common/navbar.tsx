@@ -12,14 +12,14 @@ const NavBar: NextPage<Props> = ({ className }) => {
         className={`text-black flex justify-between items-center h-full px-5 md:p-0${className ? ` ${className}` : ``}`}
       >
         <li>
-          <Link href="/" passHref={true}>
-            <a className="font-bold hover:text-gray-500">Media Assets Center</a>
+          <Link href="/" className="font-bold hover:text-gray-500">
+            Media Assets Center
           </Link>
         </li>
         <div>
           <li>
-            <Link href="/" passHref={true}>
-              <a className="hover:text-gray-500">Search</a>
+            <Link href="/" className="hover:text-gray-500">
+              Search
             </Link>
           </li>
         </div>

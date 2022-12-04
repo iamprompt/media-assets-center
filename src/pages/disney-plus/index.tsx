@@ -50,23 +50,19 @@ const Home: NextPage<{ data: LandingResponse; options: { region: string; locale:
                   return (
                     <Link
                       href={`/disney-plus/${d.type}/${d.encodedId}?region=${options.region}&locale=${options.locale}`}
-                      passHref={true}
                       key={d.encodedId}
+                      className={`w-full relative rounded-xl shadow-md aspect-h-9 aspect-w-16`}
                     >
-                      <a className={`w-full relative rounded-xl shadow-md aspect-h-9 aspect-w-16`}>
-                        <img
-                          className="rounded-xl object-cover"
-                          src={`${d.image.url}/badging?width=800&aspectRatio=1.78&format=jpeg${
-                            options.label || d.badging
-                              ? `&label=${options.label !== '' ? options.label : d.badging}`
-                              : ''
-                          }`}
-                          alt={d.name}
-                        />
-                        <div className="text-white w-full h-full absolute inset-0 z-10 from-black/80 to-black/0 bg-gradient-to-t rounded-xl bg-opacity-0 opacity-0 hover:bg-opacity-70 hover:opacity-100 transition-all group flex flex-col justify-end p-3">
-                          <h1 className="font-bold font-headline text-right">{d.name}</h1>
-                        </div>
-                      </a>
+                      <img
+                        className="rounded-xl object-cover"
+                        src={`${d.image.url}/badging?width=800&aspectRatio=1.78&format=jpeg${
+                          options.label || d.badging ? `&label=${options.label !== '' ? options.label : d.badging}` : ''
+                        }`}
+                        alt={d.name}
+                      />
+                      <div className="text-white w-full h-full absolute inset-0 z-10 from-black/80 to-black/0 bg-gradient-to-t rounded-xl bg-opacity-0 opacity-0 hover:bg-opacity-70 hover:opacity-100 transition-all group flex flex-col justify-end p-3">
+                        <h1 className="font-bold font-headline text-right">{d.name}</h1>
+                      </div>
                     </Link>
                   )
                 })}

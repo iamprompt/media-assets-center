@@ -5,6 +5,7 @@ type Props = {
   title?: string
   description?: string
   image?: string
+  children?: React.ReactNode
 }
 
 const SEO: NextPage<Props> = ({ children, title, description = 'The center of the Apple TV assets' }) => {

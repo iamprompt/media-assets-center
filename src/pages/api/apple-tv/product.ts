@@ -15,75 +15,71 @@ const ProductAPI = async (req: NextApiRequest, res: NextApiResponse<ResponseProp
   if (Array.isArray(cId) || Array.isArray(country) || Array.isArray(locale))
     return res.status(400).json({ success: false, payload: 'Invalid query' })
 
-  try {
-    const {
-      data: {
-        data: { content, related, roles, trailers },
-      },
-    } = await APPLE_TV_API.GET_MEDIA_INFO({
-      cId: cId,
-      country: country || 'th',
-      locale: locale || 'th-TH',
-    })
+  const {
+    data: {
+      data: { content: contentRaw },
+    },
+  } = await APPLE_TV_API.GET_MEDIA_INFO({
+    cId: cId!,
+    country: country || 'th',
+    locale: locale || 'th-TH',
+  })
 
-    // console.log(content, related, roles, trailers)
+  const [contentId, content] = Object.entries(contentRaw)[0] as [string, any]
 
-    const payload: ProductResultResponse = {
-      id: cId,
-      result: {
-        id: content.id,
-        type: content.type,
-        title: content.title,
-        description: content.description,
-        releaseDate: content.releaseDate,
-        images: ImagesFormat(content.images),
-        duration: content.duration,
-        url: content.url,
-      },
-    }
-
-    if (roles) {
-      for (const role of roles) {
-        if (!payload.result.roles) payload.result.roles = []
-        payload.result.roles.push({
-          type: role.type,
-          roleTitle: role.roleTitle,
-          characterName: role.characterName,
-          images: ImagesFormat(role.images),
-          personName: role.personName,
-          personId: role.personId,
-          url: role.url,
-        })
-      }
-    }
-
-    if (related) {
-      for (const relatedItem of related.items) {
-        if (!payload.result.related) payload.result.related = {}
-        payload.result.related[relatedItem.id] = {
-          title: relatedItem.title,
-          images: ImagesFormat(relatedItem.images, ['coverArt', 'coverArt16X9']),
-        }
-      }
-    }
-
-    // if (trailers) {
-    //   for (const trailer of trailers) {
-    //     if (!payload.result.trailers) payload.result.trailers = []
-    //     payload.result.trailers.push({
-    //       title: trailer.title,
-    //       hlsUrl: trailer.assets.hlsUrl,
-    //       duration: trailer.duration,
-    //     })
-    //   }
-    // }
-
-    // console.log(payload)
-
-    res.status(200).json({ success: true, payload })
-  } catch (err) {
-    if (axios.isAxiosError(err)) res.status(err?.response?.status || 400).json({ success: false, payload: err.message })
+  const payload: ProductResultResponse = {
+    id: cId!,
+    result: {
+      id: contentId,
+      type: content.type,
+      title: content.title,
+      description: content.description,
+      releaseDate: content.releaseDate,
+      images: ImagesFormat(content.images),
+      duration: content.duration,
+      url: content.url,
+    },
   }
+
+  // if (roles) {
+  //   for (const role of roles) {
+  //     if (!payload.result.roles) payload.result.roles = []
+  //     payload.result.roles.push({
+  //       type: role.type,
+  //       roleTitle: role.roleTitle,
+  //       characterName: role.characterName,
+  //       images: ImagesFormat(role.images),
+  //       personName: role.personName,
+  //       personId: role.personId,
+  //       url: role.url,
+  //     })
+  //   }
+  // }
+
+  // if (related) {
+  //   for (const relatedItem of related.items) {
+  //     if (!payload.result.related) payload.result.related = {}
+  //     payload.result.related[relatedItem.id] = {
+  //       title: relatedItem.title,
+  //       images: ImagesFormat(relatedItem.images, ['shelfImage', 'shelfImageBackground']),
+  //     }
+  //   }
+  // }
+
+  // if (trailers) {
+  //   for (const trailer of trailers) {
+  //     if (!payload.result.trailers) payload.result.trailers = []
+  //     payload.result.trailers.push({
+  //       title: trailer.title,
+  //       hlsUrl: trailer.assets.hlsUrl,
+  //       duration: trailer.duration,
+  //     })
+  //   }
+  // }
+
+  // console.log(payload)
+
+  res.status(200).json({ success: true, payload })
 }
 
 export default ProductAPI

@@ -68,4 +68,6 @@ export enum ImageType {
   'whiteLogo',
   'colorLogo',
   'shelfImage',
+  'shelfImageBackground',
+  'transitionImage',
 }
