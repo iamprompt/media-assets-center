@@ -13,10 +13,10 @@ import dayjs from 'dayjs'
 import SEO from '../../../components/common/seo'
 import { getImageUrl } from '../../../utils/platforms/apple-tv/helpers'
 
-export const getServerSideProps: GetServerSideProps = async ({ params }: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = async ({ params,query }: GetServerSidePropsContext) => {
   const id = stringDefault(params?.id, '')
-  const country = stringDefault(params?.country, 'TH')
-  const locale = stringDefault(params?.locale, Object.keys(REGIONS[country.toUpperCase()].langs)[0])
+  const country = stringDefault(query?.country, 'TH')
+  const locale = stringDefault(query?.locale, Object.keys(REGIONS[country.toUpperCase()].langs)[0])
 
   try {
     const {
